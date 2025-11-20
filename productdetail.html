@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Product Detail</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 25px;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .cart {
+        background: #f0f2ff;
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+      .product-container {
+        display: flex;
+        gap: 40px;
+        padding: 40px;
+        max-width: 1100px;
+        margin: auto;
+        background: #fff;
+        margin-top: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      }
+      .product-img {
+        width: 400px;
+        height: 430px;
+        object-fit: contain;
+        border-radius: 10px;
+        background: #fafafa;
+        padding: 20px;
+        border: 1px solid #eee;
+      }
+      h2 {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .price {
+        font-size: 30px;
+        color: #008b20;
+        margin: 15px 0;
+        font-weight: bold;
+      }
+      #productDesc {
+        line-height: 1.6;
+        color: #444;
+        margin-bottom: 20px;
+      }
+      button {
+        background: #2563eb;
+        color: white;
+        padding: 14px 25px;
+        border: none;
+        font-size: 17px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: 0.3s;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      }
+      button:hover {
+        background: #1e4fd1;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo">
+        <a href="index.html" style="text-decoration: none; color: inherit"
+          >🛍️ <b>MyShop</b></a
+        >
+      </div>
+      <div class="cart">🛒 Cart <span id="cartCount">0</span></div>
+    </div>
+
+    <!-- PRODUCT DETAIL -->
+    <div class="product-container">
+      <img alt="product-image" id="productImage" class="product-img" />
+      <div class="product-info">
+        <h2 id="productName"></h2>
+        <p class="price" id="productPrice"></p>
+        <p id="productDesc"></p>
+        <button id="addBtn">➕ Add to Cart</button>
+      </div>
+    </div>
+
+    <script>
+      // CART SYSTEM
+      function loadCartCount() {
+        let c = sessionStorage.getItem("cartCount") || 0;
+        document.getElementById("cartCount").innerText = c;
+      }
+      function addToCart() {
+        let c = sessionStorage.getItem("cartCount") || 0;
+        c = Number(c) + 1;
+        sessionStorage.setItem("cartCount", c);
+        document.getElementById("cartCount").innerText = c;
+      }
+      document.getElementById("addBtn").addEventListener("click", addToCart);
+      loadCartCount();
+
+      // LOAD PRODUCT DATA
+      const topdealProduct = JSON.parse(
+        sessionStorage.getItem("topdealProduct")
+      ); // Topdeal product
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("id"); // API product ID
+
+      async function loadProduct() {
+        if (topdealProduct) {
+          // Render topdeal product
+          document.getElementById("productImage").src = topdealProduct.image;
+          document.getElementById("productName").innerText =
+            topdealProduct.title;
+          document.getElementById("productPrice").innerText =
+            topdealProduct.price;
+          document.getElementById("productDesc").innerText =
+            "Special top deal product!";
+          sessionStorage.removeItem("topdealProduct"); // clear after render
+        } else if (productId) {
+          // Render API product
+          const res = await fetch(
+            `https://fakestoreapi.com/products/${productId}`
+          );
+          const data = await res.json();
+          document.getElementById("productImage").src = data.image;
+          document.getElementById("productName").innerText = data.title;
+          document.getElementById("productPrice").innerText = "₹" + data.price;
+          document.getElementById("productDesc").innerText = data.description;
+        } else {
+          document.getElementById("productDesc").innerText =
+            "Product not found!";
+        }
+      }
+
+      loadProduct();
+    </script>
+    <script>
+      fetch("footer.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("footer-placeholder").innerHTML = data;
+        })
+        .catch((err) => console.error("Error loading footer:", err));
+    </script>
+    <!--Footer component --->
+    <footer class="footer" style="margin-top: 4%">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>ABOUT</h3>
+          <a href="#">Contact Us</a>
+          <a href="#">About Us</a>
+          <a href="#">Careers</a>
+          <a href="#">Flipkart Stories</a>
+          <a href="#">Press</a>
+          <a href="#">Corporate Information</a>
+        </div>
+
+        <div class="footer-section">
+          <h3>GROUP COMPANIES</h3>
+          <a href="#">Myntra</a>
+          <a href="#">Cleartrip</a>
+          <a href="#">Shopsy</a>
+        </div>
+
+        <div class="footer-section">
+          <h3>HELP</h3>
+          <a href="#">Payments</a>
+          <a href="#">Shipping</a>
+          <a href="#">Cancellation & Returns</a>
+          <a href="#">FAQ</a>
+        </div>
+
+        <div class="footer-section">
+          <h3>CONSUMER POLICY</h3>
+          <a href="#">Cancellation & Returns</a>
+          <a href="#">Terms Of Use</a>
+          <a href="#">Security</a>
+          <a href="#">Privacy</a>
+          <a href="#">Sitemap</a>
+          <a href="#">Grievance Redressal</a>
+          <a href="#">EPR Compliance</a>
+          <a href="#">FSSAI Support</a>
+        </div>
+
+        <div class="footer-section address">
+          <h3>Mail Us:</h3>
+          <p>
+            Flipkart Internet Private Limited,<br />
+            Buildings Alyssa, Begonia &<br />
+            Clove Embassy Tech Village,<br />
+            Outer Ring Road, Devarabeesanahalli Village,<br />
+            Bengaluru, 560103,<br />
+            Karnataka, India
+          </p>
+        </div>
+
+        <div class="footer-section address">
+          <h3>Registered Office Address:</h3>
+          <p>
+            Flipkart Internet Private Limited,<br />
+            Buildings Alyssa, Begonia &<br />
+            Clove Embassy Tech Village,<br />
+            Outer Ring Road, Devarabeesanahalli Village,<br />
+            Bengaluru, 560103,<br />
+            Karnataka, India<br />
+            CIN : U51109KA2012PTC066107<br />
+            Telephone: 044-45614700
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2007–2025 Flipkart.com</p>
+      </div>
+    </footer>
+  </body>
+</html>

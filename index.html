@@ -25,7 +25,7 @@
       <div>
         <nav class="nav-item">
           <span style="margin-right: 20px; padding-left: 20px">👤Login</span>
-          <span style="margin-right: 20px; padding-left: 20px">🛒Cart</span>
+          <span id="cartCount">🛒 Cart </span>
           <span style="margin-right: 20px; padding-left: 20px"
             >🗳️Become a Seller</span
           >
@@ -131,6 +131,20 @@
         </div>
       </footer>
       
+
+ <!-- Cart Counter Script -->
+  <script>
+    // Reset cart count every time user comes home
+    sessionStorage.setItem("cartCount", 0);
+
+    function updateCartUI() {
+      let count = sessionStorage.getItem("cartCount") || 0;
+      document.getElementById("cartCount").innerText = `🛒 Cart (${count})`;
+    }
+
+    updateCartUI(); // show cart count
+  </script>
+
 
     <script src="script.js"></script>
     <script src="productdetail.js"></script>

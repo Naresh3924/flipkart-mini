@@ -51,10 +51,20 @@ const topdealslist = [
 
 const topdeals = document.getElementById("topdeals");
 
-topdealslist.map((list) => {
-  topdeals.innerHTML += `<div class="topdeals-card">
-    <img src="${list.image}" alt="${list.title}" />
-    <h3>${list.title}</h3>
-    <p>${list.price}</p>
-  </div>`;
+topdealslist.forEach((item) => {
+  const card = document.createElement("div");
+  card.classList.add("topdeals-card");
+  card.innerHTML = `
+    <img src="${item.image}" alt="${item.title}" />
+    <h3>${item.title}</h3>
+    <p>${item.price}</p>
+  `;
+
+  // Save product to sessionStorage & redirect
+  card.addEventListener("click", () => {
+    sessionStorage.setItem("topdealProduct", JSON.stringify(item));
+    window.location.href = "productdetail.html";
+  });
+
+  topdeals.appendChild(card);
 });
