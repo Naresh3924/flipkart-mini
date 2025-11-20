@@ -181,6 +181,7 @@ body {
 }
 
 .topdeals-card:hover {
+  cursor: pointer;
   box-shadow: 0px 8px 8px rgba(86, 85, 85, 0.3);
 }
 

@@ -24,8 +24,8 @@ function displayProducts(products) {
   const html = products
     .map(
       (item) => `
-        <div class="product-card">
-          <img class="product-img"  src="${item.image}" alt="${item.title}" />
+        <div class="product-card" onclick="openProduct(${item.id})">
+          <img class="product-img" src="${item.image}" alt="${item.title}" />
           <h4 class="product-title">${item.title}</h4>
           <p style="color: green; font-size: large;">${item?.rating?.rate}⭐️</p>
           <p>₹${item.price}</p>
@@ -35,6 +35,11 @@ function displayProducts(products) {
     .join("");
 
   fetchdata.innerHTML = html;
+}
+
+// Open product detail page
+function openProduct(id) {
+  window.location.href = `productdetail.html?id=${id}`;
 }
 
 // Search functionality
