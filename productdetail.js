@@ -25,8 +25,8 @@ function displayProducts(products) {
     .map(
       (item) => `
         <div class="product-card">
-          <img class="product-img" src="${item.image}" alt="${item.title}" />
-          <h4>${item.title}</h4>
+          <img class="product-img"  src="${item.image}" alt="${item.title}" />
+          <h4 class="product-title">${item.title}</h4>
           <p style="color: green; font-size: large;">${item?.rating?.rate}⭐️</p>
           <p>₹${item.price}</p>
         </div>
